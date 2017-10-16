@@ -16,10 +16,14 @@ public class PrintTree2 {
             return null;
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
         List<Integer> list = new ArrayList<Integer>();
+
+        StringBuilder sb = new StringBuilder();
+
+
         queue.add(root);
         TreeNode last = root;
         TreeNode nlast = last;
-        int row = 0;
+
         while( !queue.isEmpty() )
         {
             TreeNode temp = queue.poll();
@@ -34,47 +38,47 @@ public class PrintTree2 {
             }
 
             if(last == temp) {
-                list.add(temp.val);
-                list.add(-1);
+                sb.append(temp.val);
+                sb.append("!");
                 last = nlast;
-                row++;
+
 
             }
             else {
-                list.add(temp.val);
-                row++;
+                sb.append(temp.val);
+
             }
         }
-        System.out.println(row);
 
-        int[][] ints = new int[row][row];
+        String str = sb.toString();//NO pure
+        String[] strs= str.split("[!]");
+        String pureStr = "";
+        for (String  s : strs
+                ) {
+            pureStr += s;
+        }
 
-        int i = 0;
-        for(int j = 0,len = i; j< list.size()-len;len++)
+        int[][] ints = new int[strs.length][];
+        int len = 0;
+        for (int i = 0 ; i< ints.length ; i++)
         {
-
-            if(list.get(len)==-1)
+            int[] sub = new int[strs[i].length()];
+            len += strs[i].length();
+            for (int j = sub.length-1,count=0; j>-1 ; j--,count++)
             {
-                i++;
-                j=0;
-                continue;
-            }else
-            {
-                ints[i][j] = list.get(len);
-                System.out.println("["+i+"]"+"["+j+"] : "+ints[i][j]);
-                /**
-                 * 此处打印的结果和预期相同
-                 */
-                j++;
+                sub[count] = Integer.parseInt(pureStr.charAt(len-j-1)+"");
+                System.out.println(sub[count]);
             }
+            ints[i] = sub;
+        }
+
+//        for (int n=0;n<ints.length;n++){
+//            for (int j=0; j<ints[n].length;j++){
+//                System.out.println(ints[n][j]+"===");
+//            }
+//        }
 
 
-        }
-        for (int n=0;n<row;n++){
-            for (int j=0; j<row;j++){
-                System.out.println(ints[n][j]);
-            }
-        }
         return ints;
     }
 
@@ -86,7 +90,7 @@ public class PrintTree2 {
         root.right.left = new TreeNode(5);
         root.right.right = new TreeNode(6);
         root.right.left.left = new TreeNode(7);
-        root.right.left.right = new TreeNode(8);
+        root.right.left.right = new TreeNode(10);
 
         PrintTree2 p = new PrintTree2();
         int[][] ints=p.printTree(root);
